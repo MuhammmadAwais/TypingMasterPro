@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta
+      name="description"
+      content="TypeMaster Pro — a sleek typing game with WPM, accuracy, and streaks."
+    />
+    <title>TypeMaster Pro • Typing Game</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <link rel="stylesheet" href="./styles.css" />
+
+    <link
+      rel="icon"
+      href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⌨️</text></svg>"
+    />
+
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self' https://www.gstatic.com https://fonts.googleapis.com https://fonts.gstatic.com; img-src 'self' data:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; script-src 'self' https://www.gstatic.com 'unsafe-inline' 'unsafe-eval'; connect-src https://firestore.googleapis.com https://securetoken.googleapis.com https://www.googleapis.com https://identitytoolkit.googleapis.com;"
+    />
+  </head>
+  <body class="antialiased">
+    <div class="particles-bg"></div>
+
+    <main
+      id="auth-page"
+      class="min-h-screen flex flex-col items-center justify-center p-4"
+    >
+      <div class="text-center">
+        <h1 class="text-5xl md:text-6xl font-extrabold text-white mb-4">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="48"
+            height="48"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="inline-block mb-2 text-cyan-400"
+          >
+            <path d="M10 12.5 8 15l-4-4"></path>
+            <path d="m14 12.5 2 2.5 4-4"></path>
+            <path d="M18 8a4 4 0 1 0-8 0 4 4 0 0 0 8 0Z"></path>
+            <path d="M18 16a4 4 0 1 1-8 0 4 4 0 0 1 8 0Z"></path>
+          </svg>
+          TypeMaster Pro
+        </h1>
+        <p class="text-lg md:text-xl text-gray-300 mb-8">
+          Hone your typing skills and achieve mastery.
+        </p>
+        <button
+          id="play-btn"
+          class="btn-primary text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 ease-in-out"
+        >
+          Play as Guest
+        </button>
+      </div>
+    </main>
+
+    <div id="game-page" class="hidden">
+      <header class="py-4 topbar">
+        <div class="container mx-auto px-4 flex justify-between items-center">
+          <div class="text-xl font-bold">TypeMaster Pro</div>
+          <div class="flex items-center gap-4">
+            <button
+              id="themeToggle"
+              class="text-sm px-3 py-1 rounded-md border border-white/20 hover:bg-white/10"
+            >
+              Toggle Theme
+            </button>
+            <div class="text-right">
+              <div id="username" class="text-sm text-gray-400">Guest</div>
+              <button
+                id="logoutBtn"
+                class="text-sm text-cyan-400 hover:text-cyan-300"
+              >
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <main class="container mx-auto p-4 md:p-8">
+        <section id="leaderboard" class="glass-card p-6 mb-8 text-center">
+          <h2 class="text-xl font-bold mb-2 text-cyan-400">Leaderboard</h2>
+          <div id="leaderboard-content" class="text-lg">Loading...</div>
+        </section>
+
+        <section
+          class="game-settings glass-card p-6 mb-8 flex flex-wrap justify-center gap-6 items-center"
+        >
+          <div class="setting-group">
+            <label class="block text-sm text-gray-400 mb-2 text-center"
+              >Mode</label
+            >
+            <div class="flex gap-2 rounded-md bg-settings p-1">
+              <button
+                class="mode-btn active w-24 text-center py-2 px-4 rounded-md transition"
+                data-mode="time"
+              >
+                Time
+              </button>
+              <button
+                class="mode-btn w-24 py-2 px-4 rounded-md transition"
+                data-mode="words"
+              >
+                Words
+              </button>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label
+              class="block text-sm text-gray-400 mb-2 text-center"
+              id="quantityLabel"
+              >Duration (s)</label
+            >
+            <div class="flex gap-2 rounded-md bg-settings p-1">
+              <button
+                class="duration-btn active w-16 text-center py-2 px-4 rounded-md transition"
+                data-value="30"
+              >
+                30
+              </button>
+              <button
+                class="duration-btn w-16 py-2 px-4 rounded-md transition"
+                data-value="60"
+              >
+                60
+              </button>
+              <button
+                class="duration-btn w-16 py-2 px-4 rounded-md transition"
+                data-value="120"
+              >
+                120
+              </button>
+            </div>
+          </div>
+          <div class="setting-group">
+            <label class="block text-sm text-gray-400 mb-2 text-center"
+              >Word Set</label
+            >
+            <select id="wordSet" class="rounded-md bg-settings p-2">
+              <option value="common" selected>Common</option>
+              <option value="code">Coding Terms</option>
+              <option value="mixed">Mixed</option>
+            </select>
+          </div>
+          <div class="setting-group">
+            <label class="block text-sm text-gray-400 mb-2 text-center"
+              >Controls</label
+            >
+            <div class="text-gray-400 text-sm">Use on-screen buttons.</div>
+          </div>
+        </section>
+
+        <section
+          class="stats-display grid grid-cols-2 md:grid-cols-5 gap-4 mb-8"
+        >
+          <div class="stat-card glass-card p-4 text-center">
+            <div class="stat-value text-4xl font-bold" id="wpm">0</div>
+            <div class="stat-label text-gray-400">WPM</div>
+          </div>
+          <div class="stat-card glass-card p-4 text-center">
+            <div class="stat-value text-4xl font-bold" id="accuracy">100%</div>
+            <div class="stat-label text-gray-400">Accuracy</div>
+          </div>
+          <div class="stat-card glass-card p-4 text-center">
+            <div class="stat-value text-4xl font-bold" id="timer">30</div>
+            <div class="stat-label text-gray-400" id="timerLabel">Time</div>
+          </div>
+          <div class="stat-card glass-card p-4 text-center">
+            <div class="stat-value text-4xl font-bold" id="streak">0</div>
+            <div class="stat-label text-gray-400">Streak</div>
+          </div>
+          <div class="stat-card glass-card p-4 text-center">
+            <div class="stat-value text-4xl font-bold" id="best">0</div>
+            <div class="stat-label text-gray-400">Best WPM</div>
+          </div>
+        </section>
+
+        <section class="typing-area glass-card p-6 text-center">
+          <div class="relative">
+            <div
+              id="pauseBanner"
+              class="hidden absolute inset-0 flex items-center justify-center bg-black/70 rounded-lg z-10"
+            >
+              <div class="text-2xl font-bold">Paused</div>
+            </div>
+
+            <div
+              class="text-display font-mono text-2xl md:text-3xl tracking-wider leading-relaxed mb-6 h-48 overflow-hidden text-gray-500"
+              id="textDisplay"
+            >
+              Click start to begin...
+            </div>
+            <input
+              type="text"
+              id="typingInput"
+              class="invisible-input"
+              autocomplete="off"
+              autocorrect="off"
+              autocapitalize="off"
+              spellcheck="false"
+              disabled
+            />
+          </div>
+
+          <div class="flex flex-wrap gap-3 justify-center mt-6">
+            <button
+              id="startBtn"
+              class="btn-primary text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 ease-in-out"
+            >
+              Start Game
+            </button>
+            <button
+              id="pauseBtn"
+              class="secondary-btn py-3 px-6 rounded-lg text-lg"
+            >
+              Pause
+            </button>
+            <button
+              id="copyBtn"
+              class="secondary-btn py-3 px-6 rounded-lg text-lg"
+            >
+              Copy Results
+            </button>
+          </div>
+        </section>
+      </main>
+
+      <div
+        id="resultsModal"
+        class="modal fixed inset-0 bg-black/75 items-center justify-center z-50"
+      >
+        <div
+          class="modal-content glass-card w-full max-w-md m-4 p-8 text-center"
+        >
+          <h2 class="text-3xl font-bold mb-6">Game Over!</h2>
+          <div class="results-grid grid grid-cols-2 gap-6 mb-8">
+            <div class="result-item">
+              <div class="result-value text-4xl font-bold" id="finalWPM">0</div>
+              <div class="result-label text-gray-400">WPM</div>
+            </div>
+            <div class="result-item">
+              <div class="result-value text-4xl font-bold" id="finalAccuracy">
+                0%
+              </div>
+              <div class="result-label text-gray-400">Accuracy</div>
+            </div>
+            <div class="result-item">
+              <div class="result-value text-4xl font-bold" id="totalKeys">
+                0
+              </div>
+              <div class="result-label text-gray-400">Keystrokes</div>
+            </div>
+            <div class="result-item">
+              <div class="result-value text-4xl font-bold" id="totalWords">
+                0
+              </div>
+              <div class="result-label text-gray-400">Words</div>
+            </div>
+          </div>
+          <div class="modal-actions flex gap-3 justify-center">
+            <button
+              id="retryBtn"
+              class="btn-primary text-white font-bold py-3 px-8 rounded-lg text-lg transition-transform duration-300 ease-in-out"
+            >
+              Try Again
+            </button>
+            <button
+              id="closeModalBtn"
+              class="secondary-btn py-3 px-6 rounded-lg text-lg"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="./app.js"></script>
+  </body>
+</html>

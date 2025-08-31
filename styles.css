@@ -1,0 +1,164 @@
+:root {
+  --bg-primary: #0a0e1a;
+  --bg-secondary: #141925;
+  --bg-card: #1e2436;
+  --bg-settings: #1f2937;
+  --accent-primary: #00d4ff;
+  --accent-secondary: #ff006e;
+  --text-primary: #ffffff;
+  --text-secondary: #8892b0;
+  --text-muted: #4a5568;
+  --text-settings-btn: #d1d5db;
+  --gradient-accent: linear-gradient(135deg, #00d4ff 0%, #ff006e 100%);
+  --font-primary: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "JetBrains Mono", "Courier New", monospace;
+  --transition-smooth: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+:root.light {
+  --bg-primary: #f6f7fb;
+  --bg-secondary: #ffffff;
+  --bg-card: #ffffff;
+  --bg-settings: #e5e7eb;
+  --text-primary: #0b1220;
+  --text-secondary: #475569;
+  --text-muted: #6b7280;
+  --text-settings-btn: #374151;
+}
+
+* {
+  box-sizing: border-box;
+}
+html,
+body {
+  height: 100%;
+}
+body {
+  font-family: var(--font-primary);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+}
+
+.particles-bg {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(
+      circle at 20% 50%,
+      rgba(0, 212, 255, 0.1) 0%,
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 80% 80%,
+      rgba(255, 0, 110, 0.1) 0%,
+      transparent 40%
+    ),
+    var(--bg-primary);
+  z-index: -1;
+}
+
+.glass-card {
+  background: color-mix(in srgb, var(--bg-card) 80%, transparent);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 1rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+  background: var(--gradient-accent);
+  color: white !important;
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px rgba(0, 212, 255, 0.3);
+}
+.secondary-btn {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+}
+.secondary-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.bg-settings {
+  background-color: var(--bg-settings);
+}
+.game-settings .mode-btn,
+.game-settings .duration-btn {
+  color: var(--text-settings-btn);
+}
+
+.char.current {
+  background: rgba(0, 212, 255, 0.3);
+  animation: pulse 1.2s infinite;
+  border-radius: 2px;
+}
+
+.char.correct {
+  color: var(--accent-primary);
+}
+.char.incorrect {
+  color: var(--accent-secondary);
+  text-decoration: underline;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.modal {
+  display: none;
+}
+.modal.show {
+  display: flex;
+  animation: fadeIn 0.3s ease;
+}
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.invisible-input {
+  opacity: 0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  cursor: text;
+}
+.topbar {
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+/* Light theme tweaks */
+:root.light .glass-card {
+  border-color: rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+}
+:root.light .secondary-btn {
+  border-color: rgba(0, 0, 0, 0.12);
+  background: rgba(0, 0, 0, 0.02);
+}
+:root.light .secondary-btn:hover {
+  background: rgba(0, 0, 0, 0.06);
+}
+:root.light .topbar {
+  border-bottom-color: rgba(0, 0, 0, 0.08);
+}
+:root.light #wordSet {
+  color: var(--text-primary);
+}
