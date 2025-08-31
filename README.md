@@ -12,7 +12,9 @@ A sleek typing game with Firebase auth + Firestore stats, built for static hosti
 - Theme toggle (Dark/Light), persisted
 - Copy results
 - Firebase anonymous auth, per-user game logs + summary stats (paths fixed)
-  -LeaderBoard
+- LeaderBoard
+
+  Demo Web app URL = https://velvety-marshmallow-53643e.netlify.app/
 
 ## File Structure
 
@@ -36,11 +38,7 @@ Firestore paths used (correct doc/collection segmentation):
 
 ## Run locally
 
-Just open `index.html` with a local web server (because ES modules). For example:
-
-```bash
-npx http-server . -p 5173
-```
+Just open `index.html` with a local web server 
 
 ## Deploy
 
